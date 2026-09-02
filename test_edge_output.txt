@@ -1,0 +1,110 @@
+========================================================
+   Text and Code Editor Engine (C++17 Console Edition)
+========================================================
+[MODE] Executing script mode: 'tests/test_edge_cases.txt'
+
+Command> # Test Script for Edge Cases
+Command> # 1. Operating on Empty Document
+Command> PRINT
+--- Document View (Line 0 / 0) ---
+[Empty Document]
+--------------------------------------------
+Command> UP
+[UP] Cursor already at line 1. [Time: 0.10 us | Steps: 0]
+Command> DOWN
+[DOWN] Cursor already at end of file (line 0). [Time: 0.10 us | Steps: 0]
+Command> DELETE
+[DELETE Error] Cannot delete from empty document or past EOF. [Time: 0.10 us | Steps: 0]
+Command> REPLACE Empty line text
+[REPLACE Error] Cannot replace on empty document. [Time: 0.10 us | Steps: 0]
+Command> UNDO
+[UNDO] Nothing to undo. [Time: 0.20 us | Steps: 0]
+Command> REDO
+[REDO] Nothing to redo. [Time: 0.10 us | Steps: 0]
+Command> 
+Command> # 2. Loading Manuscript Data
+Command> LOAD data/manuscript.txt
+[LOAD] Loaded 'data/manuscript.txt' successfully. Total lines: 54 [Time: 219.40 us | Steps: 108]
+Command> PRINT
+--- Document View (Line 1 / 54) ---
+ > 1: # Sample Manuscript File for Text and Code Editor Engine
+   2: # Line 2: Introduction to Data Structures
+   3: Welcome to the Text and Code Editor Engine project.
+--------------------------------------------
+Command> 
+Command> # 3. Undo / Redo Stack Behavior
+Command> INSERT Line inserted at line 1
+[INSERT] Inserted line at position 1. [Time: 1.40 us | Steps: 2]
+Command> PRINT
+--- Document View (Line 1 / 55) ---
+ > 1: Line inserted at line 1
+   2: # Sample Manuscript File for Text and Code Editor Engine
+   3: # Line 2: Introduction to Data Structures
+--------------------------------------------
+Command> UNDO
+[UNDO] Undo successful. Current line: 1. [Time: 1.40 us | Steps: 2]
+Command> PRINT
+--- Document View (Line 1 / 54) ---
+ > 1: # Sample Manuscript File for Text and Code Editor Engine
+   2: # Line 2: Introduction to Data Structures
+   3: Welcome to the Text and Code Editor Engine project.
+--------------------------------------------
+Command> REDO
+[REDO] Redo successful. Current line: 1. [Time: 1.30 us | Steps: 2]
+Command> PRINT
+--- Document View (Line 1 / 55) ---
+ > 1: Line inserted at line 1
+   2: # Sample Manuscript File for Text and Code Editor Engine
+   3: # Line 2: Introduction to Data Structures
+--------------------------------------------
+Command> INSERT New edit should clear redo stack
+[INSERT] Inserted line at position 1. [Time: 0.90 us | Steps: 2]
+Command> REDO
+[REDO] Nothing to redo. [Time: 0.10 us | Steps: 0]
+Command> 
+Command> # 4. Bookmark Operations & Duplicate Rejection
+Command> BOOKMARK ADD startMark
+[BOOKMARK ADD] Added bookmark 'startMark' -> line 1. [Time: 1.90 us | Steps: 3]
+Command> BOOKMARK ADD startMark
+[BOOKMARK ADD Error] Bookmark 'startMark' already exists (duplicate rejected). [Time: 0.70 us | Steps: 2]
+Command> BOOKMARK GOTO startMark
+[BOOKMARK GOTO] Jumped to line 1 for bookmark 'startMark'. [Time: 0.60 us | Steps: 2]
+Command> BOOKMARK GOTO missingMark
+[BOOKMARK GOTO Error] Bookmark 'missingMark' not found. [Time: 0.50 us | Steps: 1]
+Command> BOOKMARK DELETE missingMark
+[BOOKMARK DELETE Error] Bookmark 'missingMark' not found. [Time: 0.40 us | Steps: 1]
+Command> BOOKMARK DELETE startMark
+[BOOKMARK DELETE] Deleted bookmark 'startMark'. [Time: 0.80 us | Steps: 2]
+Command> 
+Command> # 5. Navigation & GOTO Past EOF
+Command> GOTO 9999
+[GOTO Error] Invalid line number 9999. Clamped / stays at line 1. [Time: 0.10 us | Steps: 0]
+Command> PRINT
+--- Document View (Line 1 / 56) ---
+ > 1: New edit should clear redo stack
+   2: Line inserted at line 1
+   3: # Sample Manuscript File for Text and Code Editor Engine
+--------------------------------------------
+Command> GOTO 1
+[GOTO] Jumped to line 1. [Time: 0.10 us | Steps: 0]
+Command> PRINT
+--- Document View (Line 1 / 56) ---
+ > 1: New edit should clear redo stack
+   2: Line inserted at line 1
+   3: # Sample Manuscript File for Text and Code Editor Engine
+--------------------------------------------
+Command> 
+Command> # 6. Syntax / Bracket Check
+Command> CHECKBRACKETS
+[CHECKBRACKETS] Syntax Error: Unclosed bracket '{' opened at line 54, col 18 [Time: 61.70 us | Steps: 1424]
+Command> 
+Command> # 7. Word Search Indexing
+Command> FIND indexing
+[FIND] Word 'indexing' found on line(s): 46, 47 [Time: 352.40 us | Steps: 1426]
+Command> FIND nonexistentword
+[FIND] Word 'nonexistentword' not found in document. [Time: 0.80 us | Steps: 2]
+Command> 
+Command> EXIT
+[EXIT] Terminating editor engine.
+
+[SCRIPT COMPLETED]

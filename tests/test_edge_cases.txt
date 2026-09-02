@@ -1,0 +1,46 @@
+# Test Script for Edge Cases
+# 1. Operating on Empty Document
+PRINT
+UP
+DOWN
+DELETE
+REPLACE Empty line text
+UNDO
+REDO
+
+# 2. Loading Manuscript Data
+LOAD data/manuscript.txt
+PRINT
+
+# 3. Undo / Redo Stack Behavior
+INSERT Line inserted at line 1
+PRINT
+UNDO
+PRINT
+REDO
+PRINT
+INSERT New edit should clear redo stack
+REDO
+
+# 4. Bookmark Operations & Duplicate Rejection
+BOOKMARK ADD startMark
+BOOKMARK ADD startMark
+BOOKMARK GOTO startMark
+BOOKMARK GOTO missingMark
+BOOKMARK DELETE missingMark
+BOOKMARK DELETE startMark
+
+# 5. Navigation & GOTO Past EOF
+GOTO 9999
+PRINT
+GOTO 1
+PRINT
+
+# 6. Syntax / Bracket Check
+CHECKBRACKETS
+
+# 7. Word Search Indexing
+FIND indexing
+FIND nonexistentword
+
+EXIT

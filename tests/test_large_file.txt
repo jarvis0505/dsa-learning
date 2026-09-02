@@ -1,0 +1,11 @@
+LOAD data/large_manuscript.txt
+GOTO 1
+GOTO 2500
+GOTO 5000
+BOOKMARK ADD middleBookmark
+GOTO 1
+BOOKMARK GOTO middleBookmark
+INSERT Newly inserted line in 5000 line document
+FIND performance
+UNDO
+EXIT
